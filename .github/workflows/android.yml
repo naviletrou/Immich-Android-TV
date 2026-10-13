@@ -71,7 +71,17 @@ jobs:
 
     - name: Build and Test
       if: steps.keystore_check.outputs.available != 'true'
-      run: ./gradlew assembleDebug test
+      run: |
+        set -o pipefail
+        ./gradlew assembleDebug test 2>&1 | tee build-output.log
+
+    # Makes the cause of a failed build readable from the run summary (annotations)
+    - name: Report build errors
+      if: failure()
+      run: |
+        grep -E "^e: |What went wrong|> |FAILED|error:" build-output.log | head -40 | while IFS= read -r line; do
+          echo "::error::${line}"
+        done
 
     - name: Upload Artifacts
       if: steps.keystore_check.outputs.available == 'true'
