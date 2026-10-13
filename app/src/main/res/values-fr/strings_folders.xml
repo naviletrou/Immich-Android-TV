@@ -36,4 +36,17 @@
     <string name="people_columns_desc">Taille des vignettes dans la vue Personnes (appliqué à la prochaine ouverture de la vue)</string>
     <string name="person_photos_sorting">Photos d\'une personne</string>
     <string name="person_photos_sorting_desc">Ordre des photos à l\'ouverture d\'une personne</string>
+    <string name="people_sorting">Ordre des personnes</string>
+    <string name="people_sorting_desc">Classement de la vue Personnes (appliqué à la prochaine ouverture de la vue)</string>
+    <string name="people_order_most_photos">Plus de photos en premier</string>
+    <string name="people_order_name_asc">Nom de A à Z</string>
+    <string name="people_order_name_desc">Nom de Z à A</string>
+    <string name="people_show_count">Afficher le nombre de photos</string>
+    <string name="people_show_count_desc">Affiche le nombre de photos sous le nom de chaque personne</string>
+    <string name="show_asset_date">Afficher la date des photos</string>
+    <string name="show_asset_date_desc">Affiche sous chaque vignette la date utilisée pour le classement</string>
+    <plurals name="person_count_photos">
+        <item quantity="one">%d photo</item>
+        <item quantity="other">%d photos</item>
+    </plurals>
 </resources>

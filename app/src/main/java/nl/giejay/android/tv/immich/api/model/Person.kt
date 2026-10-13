@@ -8,6 +8,9 @@ data class Person(
     val thumbnailPath: String
 )
 
+/** Answer of GET /people/{id}/statistics */
+data class PersonStatistics(val assets: Int)
+
 data class PeopleResponse(val total: Int,
                           val hasNextPage: Boolean,
                           val people: List<Person>)

@@ -36,4 +36,17 @@
     <string name="people_columns_desc">Size of the thumbnails in the people view (applies when the view is opened again)</string>
     <string name="person_photos_sorting">Photos of a person</string>
     <string name="person_photos_sorting_desc">Order of the photos when opening a person</string>
+    <string name="people_sorting">Order of the people</string>
+    <string name="people_sorting_desc">How the people view is sorted (applies when the view is opened again)</string>
+    <string name="people_order_most_photos">Most photos first</string>
+    <string name="people_order_name_asc">Name A → Z</string>
+    <string name="people_order_name_desc">Name Z → A</string>
+    <string name="people_show_count">Show number of photos</string>
+    <string name="people_show_count_desc">Show the number of photos under the name of each person</string>
+    <string name="show_asset_date">Show photo date</string>
+    <string name="show_asset_date_desc">Show the date used to sort each photo under its thumbnail</string>
+    <plurals name="person_count_photos">
+        <item quantity="one">%d photo</item>
+        <item quantity="other">%d photos</item>
+    </plurals>
 </resources>

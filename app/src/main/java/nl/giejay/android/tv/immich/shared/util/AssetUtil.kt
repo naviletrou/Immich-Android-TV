@@ -7,6 +7,7 @@ import nl.giejay.android.tv.immich.api.util.ApiUtil
 import nl.giejay.android.tv.immich.api.model.Asset
 import nl.giejay.android.tv.immich.card.Card
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
+import nl.giejay.android.tv.immich.shared.prefs.SHOW_ASSET_DATE
 import nl.giejay.android.tv.immich.shared.prefs.SLIDER_FORCE_ORIGINAL_VIDEO
 import nl.giejay.android.tv.immich.shared.prefs.SLIDER_LOAD_EDITED_PHOTO
 import java.text.SimpleDateFormat
@@ -139,9 +140,16 @@ fun List<Asset>.toCards(): List<Card> {
     }
 }
 
+/** Date used to sort the asset by date: when it was taken, otherwise when the file was created. */
+fun Asset.sortingDate(): Date? = exifInfo?.dateTimeOriginal ?: fileCreatedAt ?: fileModifiedAt
+
 fun Asset.toCard(): Card {
+    val description = this.exifInfo?.description ?: ""
+    val date = if (PreferenceManager.get(SHOW_ASSET_DATE)) {
+        sortingDate()?.let { java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, Locale.getDefault()).format(it) }
+    } else null
     return Card(this.originalFileName ?: this.deviceAssetId ?: "",
-        this.exifInfo?.description ?: "",
+        listOfNotNull(date, description.ifBlank { null }).joinToString(" · "),
         this.id,
         ApiUtil.getThumbnailUrl(this.id, "thumbnail"),
         ApiUtil.getThumbnailUrl(this.id, "preview"))

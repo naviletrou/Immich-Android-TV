@@ -129,6 +129,11 @@ class ApiClient(private val config: ApiClientConfig) {
         return executeAPICall(200) { service.listPeople() }.map { response -> response.people.filter { !it.name.isNullOrBlank() } }
     }
 
+    /** Number of assets (photos and videos) in which the person appears. */
+    suspend fun getPersonAssetCount(personId: String): Either<String, Int> {
+        return executeAPICall(200) { service.getPersonStatistics(personId) }.map { it.assets }
+    }
+
     suspend fun listAssetsFromAlbum(albumIds: List<String>,
                                     contentType: ContentType = ContentType.ALL,
                                     pageCount: Int = 100): Either<String, AssetResponse> {

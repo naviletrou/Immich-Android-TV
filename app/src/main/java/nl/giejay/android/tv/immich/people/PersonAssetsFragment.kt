@@ -1,6 +1,11 @@
 package nl.giejay.android.tv.immich.people
 
 import android.os.Bundle
+import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import nl.giejay.android.tv.immich.R
 import arrow.core.Either
 import nl.giejay.android.tv.immich.api.ApiClient
 import nl.giejay.android.tv.immich.api.model.Asset
@@ -53,6 +58,32 @@ class PersonAssetsFragment : GenericAssetFragment() {
 
 
     override fun setTitle(response: List<Asset>) {
-        title = personName
+        showTitleWithCount(PersonCountCache.get(personId))
+        // refresh the count, it may have changed since the people view was opened
+        ioScope.launch {
+            apiClient.getPersonAssetCount(personId).map { count ->
+                PersonCountCache.put(personId, count)
+                withContext(Dispatchers.Main) {
+                    if (isAdded) showTitleWithCount(count)
+                }
+            }
+        }
+    }
+
+    /** Shows the number of photos under the name, in the title at the top right. */
+    private fun showTitleWithCount(count: Int?) {
+        if (count == null) {
+            title = personName
+            return
+        }
+        val countText = resources.getQuantityString(R.plurals.person_count_photos, count, count)
+        val titleText = titleView?.findViewById<TextView>(androidx.leanback.R.id.title_text)
+        if (titleText != null) {
+            titleText.isSingleLine = false
+            titleText.maxLines = 2
+            title = "$personName\n$countText"
+        } else {
+            title = "$personName · $countText"
+        }
     }
 }

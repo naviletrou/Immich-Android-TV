@@ -37,6 +37,9 @@ interface ApiService {
     @GET("people")
     suspend fun listPeople(): Response<PeopleResponse>
 
+    @GET("people/{id}/statistics")
+    suspend fun getPersonStatistics(@retrofit2.http.Path("id") id: String): Response<nl.giejay.android.tv.immich.api.model.PersonStatistics>
+
     @PUT("assets/{id}")
     suspend fun updateAsset(@Path("id") id: String, @Body request: UpdateAssetRequest): Response<Asset>
 

@@ -520,6 +520,26 @@ data object PEOPLE_COLUMNS : IntListPref(6,
     R.array.people_columns_titles,
     R.array.people_columns_values)
 
+data object PEOPLE_SORTING : EnumByTitlePref<PeopleOrder>(PeopleOrder.MOST_PHOTOS,
+    ImmichApplication.appContext!!.getString(R.string.people_sorting),
+    ImmichApplication.appContext!!.getString(R.string.people_sorting_desc)) {
+    override fun fromPrefValue(prefValue: String): PeopleOrder {
+        return PeopleOrder.valueOfSafe(prefValue, defaultValue)
+    }
+
+    override fun getEnumEntries(): Array<PeopleOrder> {
+        return PeopleOrder.entries.toTypedArray()
+    }
+}
+
+data object PEOPLE_SHOW_COUNT : BooleanPref(true,
+    ImmichApplication.appContext!!.getString(R.string.people_show_count),
+    ImmichApplication.appContext!!.getString(R.string.people_show_count_desc))
+
+data object SHOW_ASSET_DATE : BooleanPref(true,
+    ImmichApplication.appContext!!.getString(R.string.show_asset_date),
+    ImmichApplication.appContext!!.getString(R.string.show_asset_date_desc))
+
 data object PERSON_PHOTOS_SORTING : EnumByTitlePref<PhotosOrder>(PhotosOrder.OLDEST_NEWEST,
     ImmichApplication.appContext!!.getString(R.string.person_photos_sorting),
     ImmichApplication.appContext!!.getString(R.string.person_photos_sorting_desc)) {
@@ -646,6 +666,8 @@ data object ViewFoldersPrefScreen : PrefScreen(ImmichApplication.appContext!!.ge
 data object ViewPeoplePrefScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.people), "view_people",
     listOf(
         PrefCategory("", listOf(
+            PEOPLE_SORTING,
+            PEOPLE_SHOW_COUNT,
             PEOPLE_COLUMNS,
             PERSON_PHOTOS_SORTING
         ))
@@ -664,6 +686,7 @@ data object ViewGeneralPrefScreen : PrefScreen(ImmichApplication.appContext!!.ge
     listOf(
         PrefCategory("", listOf(
             LOAD_BACKGROUND_IMAGE,
+            SHOW_ASSET_DATE,
             HOME_FIRST_ITEM
         ))
     )
