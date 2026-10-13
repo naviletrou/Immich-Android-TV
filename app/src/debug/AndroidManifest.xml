@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Test build only: distinct screensaver name, next to the one of the official app -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <service
+            android:name="nl.giejay.android.tv.immich.screensaver.ScreenSaverService"
+            android:label="Immich Dossiers"
+            tools:replace="android:label" />
+    </application>
+</manifest>

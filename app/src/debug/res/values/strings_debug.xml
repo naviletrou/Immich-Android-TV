@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- name of the test build in the Android TV app list -->
+    <string name="app_name" translatable="false">Immich TV Dossiers</string>
+</resources>
