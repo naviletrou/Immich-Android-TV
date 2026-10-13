@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Glide targets of the folder mosaic currently drawn in a card image -->
+    <item name="mosaic_targets" type="id" />
+</resources>

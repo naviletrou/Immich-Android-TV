@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="folders_settings_desc">Thumbnails, grid size and navigation of the folders view</string>
+    <string name="folder_preview_mode">Folder thumbnails</string>
+    <string name="folder_preview_mode_desc">What to show on a folder card</string>
+    <string name="folder_preview_icon">Folder icon</string>
+    <string name="folder_preview_single">One photo</string>
+    <string name="folder_preview_mosaic">Mosaic of 4 photos</string>
+    <string name="folder_columns">Number of columns</string>
+    <string name="folder_columns_desc">Size of the thumbnails in the folders view (applies when the view is opened again)</string>
+    <string name="folder_columns_3">3 columns (large)</string>
+    <string name="folder_columns_4">4 columns</string>
+    <string name="folder_columns_5">5 columns</string>
+    <string name="folder_columns_6">6 columns (small)</string>
+    <string name="folder_show_count">Show number of items</string>
+    <string name="folder_show_count_desc">Show the number of sub folders and photos under the folder name</string>
+    <string name="folder_skip_single_child">Skip intermediate folders</string>
+    <string name="folder_skip_single_child_desc">Open folders that only contain a single sub folder directly</string>
+    <string name="folder_remember_last">Reopen last folder</string>
+    <string name="folder_remember_last_desc">Open the folders view where you left it</string>
+    <string name="folder_clear_cache">Refresh folder thumbnails</string>
+    <string name="folder_clear_cache_desc">Forget the stored folder thumbnails, they will be rebuilt</string>
+    <string name="folder_clear_cache_done">Folder thumbnails will be rebuilt</string>
+    <plurals name="folder_count_folders">
+        <item quantity="one">%d folder</item>
+        <item quantity="other">%d folders</item>
+    </plurals>
+    <plurals name="folder_count_items">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+</resources>

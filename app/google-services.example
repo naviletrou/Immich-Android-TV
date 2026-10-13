@@ -18,6 +18,20 @@
           "current_key": ""
         }
       ]
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "0:000000000000:android:0000000000000001",
+        "android_client_info": {
+          "package_name": "nl.giejay.android.tv.immich.folders",
+          "certificate_hash": []
+        }
+      },
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ]
     }
   ],
   "ARTIFACT_VERSION": "1"

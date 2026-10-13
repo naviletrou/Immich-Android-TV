@@ -237,6 +237,18 @@ class ApiClient(private val config: ApiClientConfig) {
         }
     }
 
+    /**
+     * Same as [listFolders] but also returns the raw paths reported by Immich, which are the
+     * folders that directly contain assets.
+     */
+    suspend fun listFoldersWithPaths(): Either<String, Pair<Folder, List<String>>> {
+        return executeAPICall(200) {
+            service.getUniquePaths()
+        }.map { paths ->
+            Pair(createRootFolder(Folder("", mutableListOf(), null), paths), paths)
+        }
+    }
+
     private fun createRootFolder(parent: Folder, paths: List<String>): Folder {
         paths.forEach { path ->
             val directories = path.split("/")

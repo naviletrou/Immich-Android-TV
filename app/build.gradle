@@ -32,6 +32,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            // installable next to the Play Store version, with its own settings
+            applicationIdSuffix ".folders"
+            versionNameSuffix "-dossiers"
+        }
         release {
             minifyEnabled true
             shrinkResources true

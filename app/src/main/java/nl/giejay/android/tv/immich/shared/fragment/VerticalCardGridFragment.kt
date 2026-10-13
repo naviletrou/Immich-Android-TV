@@ -10,6 +10,7 @@ import androidx.leanback.app.BackgroundManager
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.OnItemViewClickedListener
+import androidx.leanback.widget.PresenterSelector
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -70,6 +71,12 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
         pageCount: Int
     ): Either<String, List<ITEM>>
 
+    /** Number of columns of the grid, can be overridden by screens that let the user choose it. */
+    protected open val columns: Int
+        get() = COLUMNS
+
+    protected open fun createPresenterSelector(): PresenterSelector = CardPresenterSelector(requireContext())
+
     abstract fun createCard(a: ITEM): Card
     abstract fun getBackgroundPicture(it: ITEM): String?
     open fun setTitle(response: List<ITEM>) {
@@ -107,7 +114,7 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 keyEvents.state.collect {
                     // open popup menu on the right side if its the last photo in the row and user presses right button
-                    if (it?.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && ((adapter.size() == 0 && allPagesLoaded) || currentSelectedIndex > 0 && (currentSelectedIndex % COLUMNS == 3 || currentSelectedIndex + 1 == adapter.size()))) {
+                    if (it?.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && ((adapter.size() == 0 && allPagesLoaded) || currentSelectedIndex > 0 && (currentSelectedIndex % columns == columns - 1 || currentSelectedIndex + 1 == adapter.size()))) {
                         openPopUpMenu()
                     } else if (it?.keyCode == KeyEvent.KEYCODE_FORWARD || it?.keyCode == KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD || it?.keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
                         updateManualPositionHandler(adapter.size() - 1)
@@ -239,10 +246,9 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
 
     private fun setupAdapter() {
         val presenter = VerticalGridPresenter(ZOOM_FACTOR)
-        presenter.numberOfColumns = COLUMNS
+        presenter.numberOfColumns = columns
         gridPresenter = presenter
-        val cardPresenter = CardPresenterSelector(requireContext())
-        adapter = ArrayObjectAdapter(cardPresenter)
+        adapter = ArrayObjectAdapter(createPresenterSelector())
     }
 
     private fun setupBackgroundManager() {

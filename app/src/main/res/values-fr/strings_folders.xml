@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folders_settings_desc">Vignettes, taille de la grille et navigation de la vue Dossiers</string>
+    <string name="folder_preview_mode">Vignettes des dossiers</string>
+    <string name="folder_preview_mode_desc">Ce qui s\'affiche sur la carte d\'un dossier</string>
+    <string name="folder_preview_icon">Icône de dossier</string>
+    <string name="folder_preview_single">Une photo</string>
+    <string name="folder_preview_mosaic">Mosaïque de 4 photos</string>
+    <string name="folder_columns">Nombre de colonnes</string>
+    <string name="folder_columns_desc">Taille des vignettes dans la vue Dossiers (appliqué à la prochaine ouverture de la vue)</string>
+    <string name="folder_columns_3">3 colonnes (grandes)</string>
+    <string name="folder_columns_4">4 colonnes</string>
+    <string name="folder_columns_5">5 colonnes</string>
+    <string name="folder_columns_6">6 colonnes (petites)</string>
+    <string name="folder_show_count">Afficher le nombre d\'éléments</string>
+    <string name="folder_show_count_desc">Affiche le nombre de sous-dossiers et de photos sous le nom du dossier</string>
+    <string name="folder_skip_single_child">Sauter les dossiers intermédiaires</string>
+    <string name="folder_skip_single_child_desc">Ouvre directement les dossiers qui ne contiennent qu\'un seul sous-dossier</string>
+    <string name="folder_remember_last">Rouvrir le dernier dossier</string>
+    <string name="folder_remember_last_desc">La vue Dossiers s\'ouvre là où vous l\'avez quittée</string>
+    <string name="folder_clear_cache">Rafraîchir les vignettes des dossiers</string>
+    <string name="folder_clear_cache_desc">Oublie les vignettes mémorisées, elles seront recalculées</string>
+    <string name="folder_clear_cache_done">Les vignettes des dossiers seront recalculées</string>
+    <plurals name="folder_count_folders">
+        <item quantity="one">%d dossier</item>
+        <item quantity="other">%d dossiers</item>
+    </plurals>
+    <plurals name="folder_count_items">
+        <item quantity="one">%d élément</item>
+        <item quantity="other">%d éléments</item>
+    </plurals>
+</resources>

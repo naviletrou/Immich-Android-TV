@@ -19,6 +19,7 @@ import nl.giejay.android.tv.immich.ImmichApplication
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.album.AlbumFragmentDirections
 import nl.giejay.android.tv.immich.album.SelectionType
+import nl.giejay.android.tv.immich.assets.FolderPreviewCache
 import nl.giejay.android.tv.immich.homescreenchannels.HomeScreenChannelManager
 import nl.giejay.android.tv.immich.screensaver.ScreenSaverType
 import nl.giejay.android.tv.immich.security.ApiKeyCipher
@@ -512,6 +513,40 @@ data object EXCLUDE_ASSETS_IN_ALBUM : StringSetPref(emptySet(),
     }
 }
 
+// folders view
+data object FOLDER_PREVIEW_MODE : IntListPref(2,
+    ImmichApplication.appContext!!.getString(R.string.folder_preview_mode),
+    ImmichApplication.appContext!!.getString(R.string.folder_preview_mode_desc),
+    R.array.folder_preview_titles,
+    R.array.folder_preview_values)
+
+data object FOLDER_COLUMNS : IntListPref(4,
+    ImmichApplication.appContext!!.getString(R.string.folder_columns),
+    ImmichApplication.appContext!!.getString(R.string.folder_columns_desc),
+    R.array.folder_columns_titles,
+    R.array.folder_columns_values)
+
+data object FOLDER_SHOW_COUNT : BooleanPref(true,
+    ImmichApplication.appContext!!.getString(R.string.folder_show_count),
+    ImmichApplication.appContext!!.getString(R.string.folder_show_count_desc))
+
+data object FOLDER_SKIP_SINGLE_CHILD : BooleanPref(true,
+    ImmichApplication.appContext!!.getString(R.string.folder_skip_single_child),
+    ImmichApplication.appContext!!.getString(R.string.folder_skip_single_child_desc))
+
+data object FOLDER_REMEMBER_LAST : BooleanPref(true,
+    ImmichApplication.appContext!!.getString(R.string.folder_remember_last),
+    ImmichApplication.appContext!!.getString(R.string.folder_remember_last_desc))
+
+data object FOLDER_CLEAR_PREVIEW_CACHE : ActionPref(null,
+    ImmichApplication.appContext!!.getString(R.string.folder_clear_cache),
+    ImmichApplication.appContext!!.getString(R.string.folder_clear_cache_desc),
+    { context, _ ->
+        FolderPreviewCache.clear()
+        Toast.makeText(context, context.getString(R.string.folder_clear_cache_done), Toast.LENGTH_SHORT).show()
+        true
+    })
+
 // Building the view
 data object ViewSlideshowDisplayPrefScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.display), "view_slideshow_display",
     listOf(
@@ -569,6 +604,19 @@ data object ViewContentPrefScreen : PrefScreen(ImmichApplication.appContext!!.ge
     )
 )
 
+data object ViewFoldersPrefScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.folders), "view_folders",
+    listOf(
+        PrefCategory("", listOf(
+            FOLDER_PREVIEW_MODE,
+            FOLDER_COLUMNS,
+            FOLDER_SHOW_COUNT,
+            FOLDER_SKIP_SINGLE_CHILD,
+            FOLDER_REMEMBER_LAST,
+            FOLDER_CLEAR_PREVIEW_CACHE
+        ))
+    )
+)
+
 data object ViewGeneralPrefScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.general), "view_general",
     listOf(
         PrefCategory("", listOf(
@@ -595,6 +643,10 @@ data object ViewPrefScreen : PrefScreen(ImmichApplication.appContext!!.getString
                 },
                 ActionPref("view_content", ImmichApplication.appContext!!.getString(R.string.content), ImmichApplication.appContext!!.getString(R.string.content_desc)) { _, navController ->
                     navController.navigate(AlbumFragmentDirections.actionGlobalToSettingsDialog("view_content"))
+                    true
+                },
+                ActionPref("view_folders", ImmichApplication.appContext!!.getString(R.string.folders), ImmichApplication.appContext!!.getString(R.string.folders_settings_desc)) { _, navController ->
+                    navController.navigate(AlbumFragmentDirections.actionGlobalToSettingsDialog("view_folders"))
                     true
                 }
             )

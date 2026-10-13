@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="folder_preview_titles">
+        <item>@string/folder_preview_icon</item>
+        <item>@string/folder_preview_single</item>
+        <item>@string/folder_preview_mosaic</item>
+    </array>
+    <string-array name="folder_preview_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <array name="folder_columns_titles">
+        <item>@string/folder_columns_3</item>
+        <item>@string/folder_columns_4</item>
+        <item>@string/folder_columns_5</item>
+        <item>@string/folder_columns_6</item>
+    </array>
+    <string-array name="folder_columns_values">
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+</resources>
