@@ -31,4 +31,9 @@
     </plurals>
     <string name="home_first_item">Rubrique en première position</string>
     <string name="home_first_item_desc">Rubrique placée en haut du menu latéral et ouverte au démarrage (appliqué au prochain lancement de l\'appli)</string>
+    <string name="people_settings_desc">Taille des visages et ordre des photos d\'une personne</string>
+    <string name="people_columns">Nombre de visages par ligne</string>
+    <string name="people_columns_desc">Taille des vignettes dans la vue Personnes (appliqué à la prochaine ouverture de la vue)</string>
+    <string name="person_photos_sorting">Photos d\'une personne</string>
+    <string name="person_photos_sorting_desc">Ordre des photos à l\'ouverture d\'une personne</string>
 </resources>

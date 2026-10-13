@@ -31,4 +31,9 @@
     </plurals>
     <string name="home_first_item">First item of the menu</string>
     <string name="home_first_item_desc">Item shown at the top of the side menu and opened at start (applies at the next start of the app)</string>
+    <string name="people_settings_desc">Size of the faces and order of the photos of a person</string>
+    <string name="people_columns">Number of faces per row</string>
+    <string name="people_columns_desc">Size of the thumbnails in the people view (applies when the view is opened again)</string>
+    <string name="person_photos_sorting">Photos of a person</string>
+    <string name="person_photos_sorting_desc">Order of the photos when opening a person</string>
 </resources>

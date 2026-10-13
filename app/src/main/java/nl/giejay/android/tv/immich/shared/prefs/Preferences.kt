@@ -513,6 +513,25 @@ data object EXCLUDE_ASSETS_IN_ALBUM : StringSetPref(emptySet(),
     }
 }
 
+// people
+data object PEOPLE_COLUMNS : IntListPref(6,
+    ImmichApplication.appContext!!.getString(R.string.people_columns),
+    ImmichApplication.appContext!!.getString(R.string.people_columns_desc),
+    R.array.people_columns_titles,
+    R.array.people_columns_values)
+
+data object PERSON_PHOTOS_SORTING : EnumByTitlePref<PhotosOrder>(PhotosOrder.OLDEST_NEWEST,
+    ImmichApplication.appContext!!.getString(R.string.person_photos_sorting),
+    ImmichApplication.appContext!!.getString(R.string.person_photos_sorting_desc)) {
+    override fun fromPrefValue(prefValue: String): PhotosOrder {
+        return PhotosOrder.valueOfSafe(prefValue, defaultValue)
+    }
+
+    override fun getEnumEntries(): Array<PhotosOrder> {
+        return PhotosOrder.entries.toTypedArray()
+    }
+}
+
 // home menu
 data object HOME_FIRST_ITEM : IntListPref(0,
     ImmichApplication.appContext!!.getString(R.string.home_first_item),
@@ -624,6 +643,23 @@ data object ViewFoldersPrefScreen : PrefScreen(ImmichApplication.appContext!!.ge
     )
 )
 
+data object ViewPeoplePrefScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.people), "view_people",
+    listOf(
+        PrefCategory("", listOf(
+            PEOPLE_COLUMNS,
+            PERSON_PHOTOS_SORTING
+        ))
+    )
+)
+
+/** Opened from the right side of the photos of a person. */
+data object PersonAssetsSettingsScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.settings), "person_assets_settings",
+    listOf(
+        PrefCategory(ImmichApplication.appContext!!.getString(R.string.ordering), listOf(PERSON_PHOTOS_SORTING)),
+        PrefCategory(ImmichApplication.appContext!!.getString(R.string.filtering), listOf(FILTER_CONTENT_TYPE))
+    )
+)
+
 data object ViewGeneralPrefScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.general), "view_general",
     listOf(
         PrefCategory("", listOf(
@@ -651,6 +687,10 @@ data object ViewPrefScreen : PrefScreen(ImmichApplication.appContext!!.getString
                 },
                 ActionPref("view_content", ImmichApplication.appContext!!.getString(R.string.content), ImmichApplication.appContext!!.getString(R.string.content_desc)) { _, navController ->
                     navController.navigate(AlbumFragmentDirections.actionGlobalToSettingsDialog("view_content"))
+                    true
+                },
+                ActionPref("view_people", ImmichApplication.appContext!!.getString(R.string.people), ImmichApplication.appContext!!.getString(R.string.people_settings_desc)) { _, navController ->
+                    navController.navigate(AlbumFragmentDirections.actionGlobalToSettingsDialog("view_people"))
                     true
                 },
                 ActionPref("view_folders", ImmichApplication.appContext!!.getString(R.string.folders), ImmichApplication.appContext!!.getString(R.string.folders_settings_desc)) { _, navController ->

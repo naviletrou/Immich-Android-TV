@@ -4,7 +4,13 @@ import android.os.Bundle
 import arrow.core.Either
 import nl.giejay.android.tv.immich.api.ApiClient
 import nl.giejay.android.tv.immich.api.model.Asset
+import androidx.navigation.fragment.findNavController
 import nl.giejay.android.tv.immich.assets.GenericAssetFragment
+import nl.giejay.android.tv.immich.home.HomeFragmentDirections
+import nl.giejay.android.tv.immich.shared.prefs.EnumByTitlePref
+import nl.giejay.android.tv.immich.shared.prefs.PERSON_PHOTOS_SORTING
+import nl.giejay.android.tv.immich.shared.prefs.PersonAssetsSettingsScreen
+import nl.giejay.android.tv.immich.shared.prefs.PhotosOrder
 import java.util.UUID
 
 class PersonAssetsFragment : GenericAssetFragment() {
@@ -22,12 +28,23 @@ class PersonAssetsFragment : GenericAssetFragment() {
         page: Int,
         pageCount: Int
     ): Either<String, List<Asset>> {
+        // chronological, the direction is chosen in the settings (used to be random)
         return apiClient.listAssets(page,
             pageCount,
-            random = true,
-            order = "desc",
+            random = false,
+            order = if (currentSort == PhotosOrder.NEWEST_OLDEST) "desc" else "asc",
             contentType = currentFilter,
-            personIds = listOf(UUID.fromString(personId))).map { it.assets.shuffled() }
+            personIds = listOf(UUID.fromString(personId))).map { it.assets }
+    }
+
+    override fun getSortingKey(): EnumByTitlePref<PhotosOrder> {
+        return PERSON_PHOTOS_SORTING
+    }
+
+    override fun openPopUpMenu() {
+        findNavController().navigate(
+            HomeFragmentDirections.actionGlobalToSettingsDialog(PersonAssetsSettingsScreen.key)
+        )
     }
 
     override fun showMediaCount(): Boolean {
