@@ -7,6 +7,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
@@ -83,3 +86,18 @@ jobs:
       with:
           name: immich-tv-dossiers-apk
           path: ./app/build/outputs/apk/debug/*.apk
+
+    # Publishes the debug APK at a fixed public address, easy to type in the Downloader app:
+    # https://github.com/<owner>/<repo>/releases/download/dossiers/immich-tv-dossiers.apk
+    - name: Publish debug APK as release
+      if: steps.keystore_check.outputs.available != 'true' && github.event_name != 'pull_request'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        cp app/build/outputs/apk/debug/*.apk immich-tv-dossiers.apk
+        if ! gh release view dossiers > /dev/null 2>&1; then
+          gh release create dossiers --prerelease --target "$GITHUB_SHA" \
+            --title "Immich TV - vue Dossiers" \
+            --notes "Version de test de la vue Dossiers, mise a jour a chaque compilation."
+        fi
+        gh release upload dossiers immich-tv-dossiers.apk --clobber
