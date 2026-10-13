@@ -49,4 +49,13 @@
         <item quantity="one">%d photo</item>
         <item quantity="other">%d photos</item>
     </plurals>
+    <string name="people_search">Search</string>
+    <string name="people_search_active">Search: %s</string>
+    <string name="people_search_hint">Name of the person</string>
+    <string name="people_search_clear">Clear</string>
+    <string name="people_search_cancel">Cancel</string>
+    <plurals name="people_search_results">
+        <item quantity="one">%d person</item>
+        <item quantity="other">%d people</item>
+    </plurals>
 </resources>
