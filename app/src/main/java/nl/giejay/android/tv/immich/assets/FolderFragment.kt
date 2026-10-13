@@ -5,6 +5,7 @@ import androidx.leanback.widget.PresenterSelector
 import androidx.navigation.fragment.findNavController
 import arrow.core.Either
 import arrow.core.getOrElse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -285,9 +286,23 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
             try {
                 toResolve.map { folder ->
                     async {
-                        val preview = resolvePreview(folder, wanted.coerceAtLeast(1), 0)
+                        // a preview that cannot be built must never take the whole app down
+                        val preview = try {
+                            resolvePreview(folder, wanted.coerceAtLeast(1), 0)
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Throwable) {
+                            Timber.e(e, "Could not build the preview of ${folder.path}")
+                            null
+                        }
                         if (preview != null) {
-                            withContext(Dispatchers.Main) { refreshCard(folder) }
+                            withContext(Dispatchers.Main) {
+                                try {
+                                    refreshCard(folder)
+                                } catch (e: Exception) {
+                                    Timber.e(e, "Could not refresh the card of ${folder.path}")
+                                }
+                            }
                         }
                     }
                 }.awaitAll()
@@ -338,11 +353,18 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
         return spreadOver(photos, count).map { it.id }
     }
 
-    /** Takes [count] elements evenly spread over the list: first, last and in between. */
+    /**
+     * Takes [count] elements evenly spread over the list: first, last and in between.
+     * Works on indexes only: [Folder] must never be hashed or compared, its generated
+     * equals/hashCode follow the parent and children references and never end.
+     */
     private fun <T> spreadOver(list: List<T>, count: Int): List<T> {
         if (list.size <= count) return list
-        if (count == 1) return listOf(list.first())
-        return (0 until count).map { list[it * (list.size - 1) / (count - 1)] }.distinct()
+        if (count <= 1) return listOf(list.first())
+        return (0 until count)
+            .map { it * (list.size - 1) / (count - 1) }
+            .distinct()
+            .map { list[it] }
     }
 
     private fun refreshCard(folder: Folder) {
