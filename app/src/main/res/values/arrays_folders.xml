@@ -22,4 +22,25 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+    <!-- indexes of HomeFragment.HEADERS -->
+    <array name="home_first_item_titles">
+        <item>@string/timeline</item>
+        <item>@string/albums</item>
+        <item>@string/photos</item>
+        <item>@string/random</item>
+        <item>@string/people</item>
+        <item>@string/recent</item>
+        <item>@string/seasonal</item>
+        <item>@string/folders</item>
+    </array>
+    <string-array name="home_first_item_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
 </resources>

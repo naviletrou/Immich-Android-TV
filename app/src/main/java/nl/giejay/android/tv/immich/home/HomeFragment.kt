@@ -28,6 +28,7 @@ import nl.giejay.android.tv.immich.people.PeopleFragment
 import nl.giejay.android.tv.immich.settings.SettingsFragment
 import nl.giejay.android.tv.immich.shared.fragment.GridFragment
 import nl.giejay.android.tv.immich.shared.prefs.HIDDEN_HOME_ITEMS
+import nl.giejay.android.tv.immich.shared.prefs.HOME_FIRST_ITEM
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import nl.giejay.android.tv.immich.timeline.TimelineFragment
 import timber.log.Timber
@@ -114,7 +115,9 @@ class HomeFragment : BrowseSupportFragment() {
     private fun loadData() {
         mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         adapter = mRowsAdapter
-        rows = createRows()
+        // the item chosen in the settings goes first (and is opened at start), the others keep their order
+        val first = PreferenceManager.get(HOME_FIRST_ITEM)
+        rows = createRows().sortedBy { if (it.headerItem.id.toInt() == first) 0 else 1 }
         mRowsAdapter.addAll(0, rows.filter { !PreferenceManager.itemInStringSet(it.headerItem.name, HIDDEN_HOME_ITEMS) })
     }
 

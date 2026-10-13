@@ -346,6 +346,13 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
         }
     }
 
+    /** Makes sure the card at [index] is in the grid, so it can be selected. */
+    protected fun renderUntil(index: Int) {
+        while (adapter.size() <= index && assetsStillToRender.isNotEmpty()) {
+            addAssetsPaginated()
+        }
+    }
+
     private fun addAssetsPaginated() {
         val assetsPaginated = assetsStillToRender.take(FETCH_COUNT)
         val cards = assetsPaginated.map { createCard(it) }

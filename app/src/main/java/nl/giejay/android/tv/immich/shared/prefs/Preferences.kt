@@ -513,6 +513,13 @@ data object EXCLUDE_ASSETS_IN_ALBUM : StringSetPref(emptySet(),
     }
 }
 
+// home menu
+data object HOME_FIRST_ITEM : IntListPref(0,
+    ImmichApplication.appContext!!.getString(R.string.home_first_item),
+    ImmichApplication.appContext!!.getString(R.string.home_first_item_desc),
+    R.array.home_first_item_titles,
+    R.array.home_first_item_values)
+
 // folders view
 data object FOLDER_PREVIEW_MODE : IntListPref(2,
     ImmichApplication.appContext!!.getString(R.string.folder_preview_mode),
@@ -620,7 +627,8 @@ data object ViewFoldersPrefScreen : PrefScreen(ImmichApplication.appContext!!.ge
 data object ViewGeneralPrefScreen : PrefScreen(ImmichApplication.appContext!!.getString(R.string.general), "view_general",
     listOf(
         PrefCategory("", listOf(
-            LOAD_BACKGROUND_IMAGE
+            LOAD_BACKGROUND_IMAGE,
+            HOME_FIRST_ITEM
         ))
     )
 )

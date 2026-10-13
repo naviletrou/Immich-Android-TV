@@ -29,4 +29,6 @@
         <item quantity="one">%d élément</item>
         <item quantity="other">%d éléments</item>
     </plurals>
+    <string name="home_first_item">Rubrique en première position</string>
+    <string name="home_first_item_desc">Rubrique placée en haut du menu latéral et ouverte au démarrage (appliqué au prochain lancement de l\'appli)</string>
 </resources>

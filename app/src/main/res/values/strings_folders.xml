@@ -29,4 +29,6 @@
         <item quantity="one">%d item</item>
         <item quantity="other">%d items</item>
     </plurals>
+    <string name="home_first_item">First item of the menu</string>
+    <string name="home_first_item_desc">Item shown at the top of the side menu and opened at start (applies at the next start of the app)</string>
 </resources>

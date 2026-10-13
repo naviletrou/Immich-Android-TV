@@ -1,5 +1,8 @@
 package nl.giejay.android.tv.immich.assets
 
+import android.os.Bundle
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.leanback.widget.PresenterSelector
 import androidx.navigation.fragment.findNavController
@@ -136,9 +139,7 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
     override fun onItemClicked(card: Card) {
         if (card.thumbnailUrl?.startsWith("folder") == true) {
             if (card.title == "..") {
-                if (stack.isNotEmpty()) {
-                    updateState(stack.removeAt(stack.size - 1))
-                }
+                goUp()
             } else {
                 val clickedChild = rootFolder!!.children.find { it.path == card.title } ?: return
                 stack.add(rootFolder!!)
@@ -180,7 +181,35 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
         )
     }
 
-    private fun updateState(clickedChild: Folder) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // the Back key of the remote goes up one folder, like the ".." card
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (stack.isNotEmpty() && view.hasFocus()) {
+                        goUp()
+                    } else {
+                        // not for us (side menu, top folder): let the app handle it as usual
+                        isEnabled = false
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                        isEnabled = true
+                    }
+                }
+            })
+    }
+
+    /** Goes back to the parent folder and selects the folder we came from. */
+    private fun goUp() {
+        if (stack.isEmpty()) return
+        val leaving = rootFolder
+        val parent = stack.removeAt(stack.size - 1)
+        // the folder we left may be deeper than a direct child when intermediate folders were skipped
+        val cameFrom = leaving?.let { generateSequence(it) { f -> f.parent }.firstOrNull { f -> f.parent === parent } }
+        updateState(parent, cameFrom)
+    }
+
+    private fun updateState(clickedChild: Folder, focusOn: Folder? = null) {
         previewJob?.cancel()
         rootFolder = clickedChild
         clearState()
@@ -194,8 +223,14 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
             }
         }
         startPreviewLoading(clickedChild.children)
-        // select the first folder, after the ".." card if there is one
-        updateManualPositionHandler(if (stack.isNotEmpty()) 1 else 0)
+        val focusIndex = focusOn?.let { target -> assets.indexOfFirst { (it.item as? Folder) === target } } ?: -1
+        if (focusIndex >= 0) {
+            renderUntil(focusIndex)
+            updateManualPositionHandler(focusIndex)
+        } else {
+            // select the first folder, after the ".." card if there is one
+            updateManualPositionHandler(if (stack.isNotEmpty()) 1 else 0)
+        }
     }
 
     private fun folderItemsFor(folder: Folder): List<Item> {
