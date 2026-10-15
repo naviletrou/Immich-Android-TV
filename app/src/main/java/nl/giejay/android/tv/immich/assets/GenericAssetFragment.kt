@@ -77,7 +77,7 @@ abstract class GenericAssetFragment : VerticalCardGridFragment<Asset>() {
             .filterNot { excludedAssetIds.contains(it.id) }
     }
 
-    private fun excludeByTag() = { asset: Asset ->
+    protected fun excludeByTag() = { asset: Asset ->
         asset.tags?.none { t -> t.name == "exclude_immich_tv" } ?: true
     }
 
@@ -133,7 +133,7 @@ abstract class GenericAssetFragment : VerticalCardGridFragment<Asset>() {
     override fun onItemClicked(card: Card) {
         progressBar?.visibility = View.VISIBLE
         lifecycleScope.launch(Dispatchers.Default) {
-            val toSliderItems = assets.toSliderItems(
+            val toSliderItems = sliderAssets().toSliderItems(
                 keepOrder = true,
                 mergePortrait = PreferenceManager.get(SLIDER_MERGE_PORTRAIT_PHOTOS)
             )
@@ -177,6 +177,9 @@ abstract class GenericAssetFragment : VerticalCardGridFragment<Asset>() {
             }
         }
     }
+
+    /** Assets shown in the photo viewer, screens with extra cards (like the search card) leave them out. */
+    protected open fun sliderAssets(): List<Asset> = assets
 
     override fun getBackgroundPicture(it: Asset): String? {
         return ApiUtil.getFileUrl(it.id, "IMAGE")

@@ -22,6 +22,19 @@ interface ApiService {
     @POST("search/metadata")
     suspend fun listAssets(@Body searchRequest: SearchRequest): Response<SearchResponse>
 
+    @POST("search/smart")
+    suspend fun smartSearch(@Body request: nl.giejay.android.tv.immich.api.model.SmartSearchRequest): Response<SearchResponse>
+
+    @POST("search/metadata")
+    suspend fun filterSearch(@Body request: nl.giejay.android.tv.immich.api.model.FilterSearchRequest): Response<SearchResponse>
+
+    @GET("search/suggestions")
+    suspend fun searchSuggestions(
+        @Query("type") type: String,
+        @Query("country") country: String? = null,
+        @Query("make") make: String? = null
+    ): Response<List<String?>>
+
     @POST("search/random")
     suspend fun randomAssets(@Body searchRequest: SearchRequest): Response<List<Asset>>
 

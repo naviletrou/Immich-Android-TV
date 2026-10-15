@@ -121,6 +121,22 @@ class ApiClient(private val config: ApiClientConfig) {
         return executeAPICall(200) { service.listAssets(searchRequest) }
     }
 
+    /** Search on the content of the photos ("beach at sunset"), results come by relevance. */
+    suspend fun smartSearch(request: nl.giejay.android.tv.immich.api.model.SmartSearchRequest): Either<String, SearchResponse> {
+        return executeAPICall(200) { service.smartSearch(request) }
+    }
+
+    /** Search on the file name, description, text in the photo, place, people, dates… */
+    suspend fun filterSearch(request: nl.giejay.android.tv.immich.api.model.FilterSearchRequest): Either<String, SearchResponse> {
+        return executeAPICall(200) { service.filterSearch(request) }
+    }
+
+    /** Values known by the server for a filter: type is country, state, city, camera-make, camera-model… */
+    suspend fun searchSuggestions(type: String, country: String? = null, make: String? = null): Either<String, List<String>> {
+        return executeAPICall(200) { service.searchSuggestions(type, country, make) }
+            .map { values -> values.filterNotNull().filter { it.isNotBlank() }.distinct().sortedWith(String.CASE_INSENSITIVE_ORDER) }
+    }
+
     suspend fun listAlbums(assetId: Option<String> = None): Either<String, List<Album>> {
         return executeAPICall(200) { service.listAlbums(assetId.getOrNull()) }
     }
