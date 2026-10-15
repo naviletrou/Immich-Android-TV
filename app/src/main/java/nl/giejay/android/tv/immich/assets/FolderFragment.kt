@@ -55,11 +55,27 @@ import nl.giejay.mediaslider.util.LoadMoreResult
 import nl.giejay.mediaslider.viewmodel.MediaSliderViewModel
 import timber.log.Timber
 
+/** Marks the search card at the top left of the folders view. */
+object FolderSearch
+
 data class Item(val item: Any) {
     fun isAsset() = item is Asset
-    fun name() = if (item is Asset) item.deviceAssetId else (item as Folder).path
+    fun isSearch() = item === FolderSearch
+    fun name() = when (item) {
+        is Asset -> item.deviceAssetId
+        is Folder -> item.path
+        else -> ""
+    }
     fun asset() = item as Asset
-    val id = if (item is Asset) item.id else (item as Folder).path
+    val id = when (item) {
+        is Asset -> item.id
+        is Folder -> item.path
+        else -> SEARCH_CARD_ID
+    }
+
+    companion object {
+        const val SEARCH_CARD_ID = "folder_search"
+    }
 }
 
 class FolderFragment : VerticalCardGridFragment<Item>() {
@@ -88,7 +104,10 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
 
     override fun sortItems(items: List<Item>): List<Item> {
         return items.sortedWith({ i, i2 ->
-            if (!i.isAsset() && !i2.isAsset() || (i.isAsset() && i2.isAsset())) {
+            if (i.isSearch() || i2.isSearch()) {
+                // the search card always comes first, at the top left
+                if (i.isSearch() && i2.isSearch()) 0 else if (i.isSearch()) -1 else 1
+            } else if (!i.isAsset() && !i2.isAsset() || (i.isAsset() && i2.isAsset())) {
                 // both folders or both items
                 i2.name()?.let { i.name()?.compareTo(it) } ?: 0
             } else if (!i.isAsset()) {
@@ -137,6 +156,10 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
     }
 
     override fun onItemClicked(card: Card) {
+        if (card.id == Item.SEARCH_CARD_ID) {
+            openSearch()
+            return
+        }
         if (card.thumbnailUrl?.startsWith("folder") == true) {
             if (card.title == "..") {
                 goUp()
@@ -148,6 +171,19 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
         } else {
             openSlider(card)
         }
+    }
+
+    /** The search of the folders view, limited to the open folder (can be changed in the filters). */
+    private fun openSearch() {
+        if (!isAdded) return
+        val current = rootFolder
+        val folder = if (current != null && stack.isNotEmpty()) current.getFullPath() to current.path else null
+        val last = nl.giejay.android.tv.immich.search.SearchFilters.loadLast(requireContext())
+        val start = nl.giejay.android.tv.immich.search.SearchFilters(
+            mode = last.searchMode, folderPath = folder?.first, folderName = folder?.second)
+        nl.giejay.android.tv.immich.search.SearchDialog(this, apiClient, ioScope, start, folder) { filters ->
+            nl.giejay.android.tv.immich.search.SearchResultsFragment.open(this, filters)
+        }.show()
     }
 
     private fun openSlider(card: Card) {
@@ -228,8 +264,8 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
             renderUntil(focusIndex)
             updateManualPositionHandler(focusIndex)
         } else {
-            // select the first folder, after the ".." card if there is one
-            updateManualPositionHandler(if (stack.isNotEmpty()) 1 else 0)
+            // select the first folder, after the search and ".." cards
+            updateManualPositionHandler(if (stack.isNotEmpty()) 2 else 1)
         }
     }
 
@@ -238,7 +274,7 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
         if (PreferenceManager.get(FOLDER_REMEMBER_LAST)) {
             FolderPreviewCache.saveLastPath(folder.getFullPath())
         }
-        return up + folder.children.map { Item(it) }
+        return listOf(Item(FolderSearch)) + up + folder.children.map { Item(it) }
     }
 
     /**
@@ -418,6 +454,12 @@ class FolderFragment : VerticalCardGridFragment<Item>() {
     }
 
     override fun createCard(a: Item): Card {
+        if (a.isSearch()) {
+            val inFolder = stack.isNotEmpty() && rootFolder != null
+            return Card(getString(R.string.search_card),
+                if (inFolder) getString(R.string.search_in_folder, rootFolder!!.path) else getString(R.string.search_all_photos),
+                Item.SEARCH_CARD_ID, nl.giejay.android.tv.immich.search.SearchResultsFragment.SEARCH_ICON, null, false)
+        }
         return if (a.item is Folder) {
             createFolderCard(a.item)
         } else {

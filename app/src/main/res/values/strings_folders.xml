@@ -109,4 +109,14 @@
     <string name="search_type_all">all</string>
     <string name="search_type_photos">Photos</string>
     <string name="search_type_videos">Videos</string>
+    <string name="search_row_folder">Folder: %s</string>
+    <string name="search_all_folders">all folders</string>
+    <string name="search_in_folder">in %s</string>
+    <string name="search_all_photos">in all photos</string>
+    <string name="search_nothing_chosen">Choose at least one filter</string>
+    <string name="search_change">Change the search</string>
+    <string name="search_new">New search</string>
+    <string name="search_last">Last search</string>
+    <string name="crash_title">The app closed because of an error</string>
+    <string name="crash_message">Take a picture of this screen to report the problem.\n\n%s</string>
 </resources>

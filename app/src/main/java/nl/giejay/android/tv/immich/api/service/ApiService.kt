@@ -23,10 +23,10 @@ interface ApiService {
     suspend fun listAssets(@Body searchRequest: SearchRequest): Response<SearchResponse>
 
     @POST("search/smart")
-    suspend fun smartSearch(@Body request: nl.giejay.android.tv.immich.api.model.SmartSearchRequest): Response<SearchResponse>
+    suspend fun smartSearch(@Body request: nl.giejay.android.tv.immich.api.model.SmartSearchV3Request): Response<SearchResponse>
 
     @POST("search/metadata")
-    suspend fun filterSearch(@Body request: nl.giejay.android.tv.immich.api.model.FilterSearchRequest): Response<SearchResponse>
+    suspend fun filterSearch(@Body request: nl.giejay.android.tv.immich.api.model.MetadataSearchV3Request): Response<SearchResponse>
 
     @GET("search/suggestions")
     suspend fun searchSuggestions(

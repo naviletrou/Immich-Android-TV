@@ -46,6 +46,10 @@
         app:destination="@id/photoSlider" />
 
     <action
+        android:id="@+id/action_global_search_results"
+        app:destination="@id/searchResultsFragment" />
+
+    <action
         android:id="@+id/action_to_metadata_fragment"
         app:destination="@id/metaDataCustomizer" />
 
@@ -78,6 +82,15 @@
         <action
             android:id="@+id/action_details_to_album_fragment"
             app:destination="@id/albumFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchResultsFragment"
+        android:name="nl.giejay.android.tv.immich.search.SearchResultsFragment"
+        android:label="SearchResultsFragment">
+        <argument
+            android:name="filters"
+            app:argType="string" />
     </fragment>
 
     <fragment

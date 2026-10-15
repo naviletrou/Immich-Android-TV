@@ -41,6 +41,7 @@ class ImmichApplication : Application() {
         // AppContextInitializer (initOrder set higher than Firebase's) sets this first;
         // kept as a cheap no-op for direct Application construction.
         appContext = this
+        nl.giejay.android.tv.immich.shared.util.CrashLog.install(this)
         PreferenceManager.init(this)
 
         if (BuildConfig.DEBUG) {

@@ -59,6 +59,7 @@ class MainActivity : FragmentActivity() {
         Timber.i("Booting main activity")
 
         setContentView(R.layout.activity_main)
+        nl.giejay.android.tv.immich.shared.util.CrashLog.showIfAny(this)
 
         keyEventsModel = ViewModelProvider(this)[KeyEventsViewModel::class.java]
 

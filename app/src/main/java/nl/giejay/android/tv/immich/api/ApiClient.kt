@@ -122,12 +122,12 @@ class ApiClient(private val config: ApiClientConfig) {
     }
 
     /** Search on the content of the photos ("beach at sunset"), results come by relevance. */
-    suspend fun smartSearch(request: nl.giejay.android.tv.immich.api.model.SmartSearchRequest): Either<String, SearchResponse> {
+    suspend fun smartSearch(request: nl.giejay.android.tv.immich.api.model.SmartSearchV3Request): Either<String, SearchResponse> {
         return executeAPICall(200) { service.smartSearch(request) }
     }
 
     /** Search on the file name, description, text in the photo, place, people, dates… */
-    suspend fun filterSearch(request: nl.giejay.android.tv.immich.api.model.FilterSearchRequest): Either<String, SearchResponse> {
+    suspend fun filterSearch(request: nl.giejay.android.tv.immich.api.model.MetadataSearchV3Request): Either<String, SearchResponse> {
         return executeAPICall(200) { service.filterSearch(request) }
     }
 

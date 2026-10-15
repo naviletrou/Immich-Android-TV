@@ -1,44 +1,23 @@
 package nl.giejay.android.tv.immich.api.model
 
-import java.util.UUID
-
 /**
- * Body of POST search/smart (search on the content of the photos, needs machine learning on the server).
- * Only properties known by the server: Immich v3 rejects unknown ones. Null values are not sent.
+ * Body of POST search/smart in the Immich v3 shape (search on the content of the photos, needs machine
+ * learning on the server). The filters go in [filter]; the old flat fields must not be sent with it.
+ * The smart search of v3 has no pagination: the [size] closest results are returned.
  */
-data class SmartSearchRequest(
+data class SmartSearchV3Request(
     val query: String,
-    val page: Int,
     val size: Int,
     val language: String? = null,
-    val city: String? = null,
-    val country: String? = null,
-    val make: String? = null,
-    val personIds: List<UUID>? = null,
-    val takenAfter: String? = null,
-    val takenBefore: String? = null,
-    val type: String? = null,
-    val isFavorite: Boolean? = null,
     val withExif: Boolean = true,
-    val visibility: String? = "timeline"
+    val filter: Map<String, Any>
 )
 
-/** Body of POST search/metadata used by the search view (file name, description, text in the photo…). */
-data class FilterSearchRequest(
-    val page: Int,
+/** Body of POST search/metadata in the Immich v3 shape, paginated with [cursor]. */
+data class MetadataSearchV3Request(
     val size: Int,
-    val order: String? = "desc",
-    val originalFileName: String? = null,
-    val description: String? = null,
-    val ocr: String? = null,
-    val city: String? = null,
-    val country: String? = null,
-    val make: String? = null,
-    val personIds: List<UUID>? = null,
-    val takenAfter: String? = null,
-    val takenBefore: String? = null,
-    val type: String? = null,
-    val isFavorite: Boolean? = null,
+    val cursor: String? = null,
     val withExif: Boolean = true,
-    val visibility: String? = "timeline"
+    val orderBy: Map<String, String>,
+    val filter: Map<String, Any>
 )
